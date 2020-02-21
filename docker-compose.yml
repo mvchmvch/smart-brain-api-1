@@ -12,8 +12,7 @@ services:
     working_dir: /app
     environment:
       POSTGRES_URI: postgres://sally:secret@postgres:5432/smart-brain-docker
-    links:
-      - postgres
+      REDIS_URI: redis://redis:6379
     volumes:
       - ./:/app
 
@@ -28,10 +27,14 @@ services:
       POSTGRES_HOST: postgres
     ports:
       - "5432:5432"
-#    build: ./
-#    command: npm start
-#    working_dir: /app
-#    volumes:
-#      - ./:/app
-
-
+# 
+  #Redis
+  redis:
+    image: 'bitnami/redis:5.0'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
+    
